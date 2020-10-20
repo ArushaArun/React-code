@@ -10,7 +10,7 @@ export default class ProductList extends Component {
                 <ProductConsumer>
                     {
                         value => {
-                           return value.products.map(p => <Product product={p}/>)
+                           return value.products.map(p => <Product product={p} key={p.id}/>)
                         }
                     }
                 </ProductConsumer>

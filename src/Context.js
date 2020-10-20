@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {storeProducts, detailProduct} from './data';
+//import {storeProducts, detailProduct} from './data';
+import axios from 'axios';
  
 const ProductContext = React.createContext();
 
@@ -21,15 +22,23 @@ class ProductProvider extends Component {
         this.setProducts();
     }
     setProducts = () => {
-        let prds = [];
-        storeProducts.forEach(p => {
-            // make a copy and add to prds
-            prds.push({...p});
+        let url = "http://localhost:1234/products"; //json-server
+        axios.get(url).then((res) => {
+            this.setState({
+                "products": res.data,
+                "detailProduct": res.data[0]
+            },
+            () => console.log("products loaded!!"))
         });
+        //let prds = [];
+        // storeProducts.forEach(p => {
+        //     // make a copy and add to prds
+        //     prds.push({...p});
+        // });
 
-        this.setState({
-            "products" : prds
-        })
+        // this.setState({
+        //     "products" : prds
+        // })
     }
 
     getItem =(id) => {
@@ -77,9 +86,9 @@ class ProductProvider extends Component {
     }
 
     checkOut = () => {
-        // this.state.cart.map(item => {
-        //     axios.post("http://localhost:1234/cart", item).then( () => console.log("added!!!"));
-        // });
+         this.state.cart.map(item => {
+             axios.post("http://localhost:1234/orders", item).then( () => console.log("added!!!"));
+        });
     }
 
 
